@@ -13,15 +13,16 @@
 
 void filecreate(void);
 void fileout(char*);
-void fileinmass()
+void fileinmass(char*);
 
+
+
+char MASS[100][300];
 int main()
 {
 	filecreate();
 	fileout("Poch.txt");
-	fileinmass
-
-	
+	fileinmass("Poch.txt");
 
 
 	system("pause");
@@ -73,4 +74,22 @@ void fileout(char* filest) {
 	}
 }
 
+void fileinmass(char* filest) {
+	FILE* fp;
+	fp = fopen(filest, "rt");
+	
+	int i = 0;
+	if (fp == NULL) std::cout << "file not found";
 
+	else
+	{
+
+		while (!feof(fp))
+		{
+			if (fgets(MASS[i++], 300, fp)) {				
+			}
+
+		}
+		fclose(fp);
+	}
+}
