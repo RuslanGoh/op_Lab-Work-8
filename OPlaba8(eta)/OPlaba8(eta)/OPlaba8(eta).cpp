@@ -13,8 +13,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 void filecreate(void);
 void fileout(char*);
-//void writefiles(char*);
-void fileinmass(char*);
+void writefiles(char*);
+//void fileinmass(char*);
 void sortuvannya(void);
 char MASS[100][300]; //// 100 lines
 int lines = 0;
@@ -22,20 +22,21 @@ int main()
 {
 	filecreate();
 	fileout("Poch.txt");
-	fileinmass("Poch.txt");
-
-	//sortuvannya();
-	std::cout << "\n  MASS:\n";
+	//fileinmass("Poch.txt");
+	writefiles("Poch.txt");	
+	fileout("parnie.txt");
+	fileout("neparnie.txt");
+	/*std::cout << "\n  MASS:\n";
 
 	for (int i = 0;i < lines;i++) {
 		std::cout << i << ": " << MASS[i];
 	}
-	sortuvannya();
+	
 	std::cout << "\n";
 	for (int i = 0;i < lines;i++) {
 		std::cout << i << ": " << MASS[i];
 	}
-	std::cout << "\n" << lines << "\n";
+	std::cout << "\n" << lines << "\n";*/
 	system("pause");
 }
 
@@ -68,7 +69,7 @@ void filecreate() {
 void fileout(char* filest) {
 	std::cout << "text file: \n";
 	FILE* fp;
-	fp = fopen(filest, "rt");
+	fp = fopen(filest, "r+t");
 	char strfile[100];
 	char ch;
 	int i = 0;
@@ -87,27 +88,39 @@ void fileout(char* filest) {
 
 	}
 	fclose(fp);
-}
-/*void writefiles(char* file) {
-FILE *fpfile = fopen(file, "rt");
-FILE *parnie = fopen("parnie", "wt");
-FILE *neparnie = fopen("neparnie", "wt");
-int i = 0;
-if (fpfile == NULL) std::cout << "file not found";
-else
-{
-while (!feof(fpfile))
-{
-if (i == 0) {
-fgets(parnie, 300, fpfile);
+	std::cout << "\n";
 
 }
+void writefiles(char* file) {
+	FILE *fpfile = fopen(file, "r+t");
+	FILE *parnie = fopen("parnie.txt", "wt");
+	FILE *neparnie = fopen("neparnie.txt", "wt");
+	int i = 0;
+	char STR[100];
+	if (fpfile == NULL) { std::cout << "file not found1"; }
+	if (parnie == NULL) { std::cout << "file not found2"; }
+	if (neparnie == NULL) { std::cout << "file not found3"; }
+	
+		while (!feof(fpfile))
+		{
+			if (i%2==0) {
+				fgets(STR, sizeof(STR), fpfile);
+				fputs(STR, parnie);
+			}
+			else {
+				fgets(STR, sizeof(STR), fpfile);
+				fputs(STR, neparnie);
+			}
+
+			i++;
+		}
+
+	
+	fclose(fpfile);
+	fclose(parnie);
+	fclose(neparnie);
 }
-
-
-
-}*/
-void fileinmass(char* filest) {
+/*void fileinmass(char* filest) {
 
 	FILE *fp = fopen(filest, "rt");
 
@@ -124,15 +137,13 @@ void fileinmass(char* filest) {
 
 
 		}
-		//for (int i = 0;i < lines;i++) {
-		//		strncpy(MASS[i],MASS1[i], strlen(MASS[i]) - 2);
-		//		}
+		
 
 	}
 	fclose(fp);
-}
+}*/
 
-void sortuvannya() {
+/*void sortuvannya() {
 	char literal, literal1;
 	int q = 0, r;
 	char string[300], MASS1[20][30];
@@ -193,5 +204,5 @@ for (int n = 0;n < l;n++) {
 strcat(MASS[i], MASS1[n]);
 }*/
 //}
-//}
+//}*/
 
