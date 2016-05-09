@@ -14,29 +14,29 @@
 void filecreate(void);
 void fileout(char*);
 void writefiles(char*);
-//void fileinmass(char*);
+void fileinmass(char* ,char* );
 void sortuvannya(void);
-char MASS[100][300]; //// 100 lines
-int lines = 0;
+char MASS[100][300],nMASS[100][300]; //// 100 lines
+int lines = 0,nlines=0;
 int main()
 {
 	filecreate();
 	fileout("Poch.txt");
-	//fileinmass("Poch.txt");
 	writefiles("Poch.txt");	
 	fileout("parnie.txt");
 	fileout("neparnie.txt");
-	/*std::cout << "\n  MASS:\n";
+	fileinmass("parnie.txt","neparnie.txt");
+	std::cout << "\n  MASS:\n";
 
 	for (int i = 0;i < lines;i++) {
-		std::cout << i << ": " << MASS[i];
+		std::cout << i << ": " << MASS[i] << "\n";
 	}
-	
-	std::cout << "\n";
-	for (int i = 0;i < lines;i++) {
-		std::cout << i << ": " << MASS[i];
+	std::cout << "\n  nMASS:\n";
+	for (int i = 0;i < nlines;i++) {
+		std::cout << i << ": " << nMASS[i] << "\n";
 	}
-	std::cout << "\n" << lines << "\n";*/
+	std::cout << "\n lines:" << lines << "\n";
+	std::cout << "\n nlines:" << nlines << "\n";
 	system("pause");
 }
 
@@ -67,7 +67,7 @@ void filecreate() {
 
 }
 void fileout(char* filest) {
-	std::cout << "text file: \n";
+	std::cout << "\ntext file: \n";
 	FILE* fp;
 	fp = fopen(filest, "r+t");
 	char strfile[100];
@@ -120,28 +120,37 @@ void writefiles(char* file) {
 	fclose(parnie);
 	fclose(neparnie);
 }
-/*void fileinmass(char* filest) {
-
-	FILE *fp = fopen(filest, "rt");
-
+void fileinmass(char* parnie, char* neparnie) {
+	char helpstring[300];
+	FILE *fp = fopen(parnie, "rt");
+	FILE *nfp = fopen(neparnie, "rt");
 	if (fp == NULL) std::cout << "file not found";
-
+	if (nfp == NULL) { std::cout << "file not found"; }
 	else
 	{
 
 		while (!feof(fp))
 		{
-			fgets(MASS[lines++], 301, fp);
-
+			fgets(helpstring, 301, fp);
+			strncpy(MASS[lines++], helpstring, strlen(helpstring) - 1);
 			if (MASS[lines - 1][0] == NULL) lines--;
 
 
 		}
 		
+		while (!feof(nfp))
+		{
+			fgets(helpstring, 301, nfp);
+			strncpy(nMASS[nlines++], helpstring, strlen(helpstring) - 1);
+			if (nMASS[nlines - 1][0] == NULL) nlines--;
+
+
+		}
 
 	}
 	fclose(fp);
-}*/
+	fclose(nfp);
+}
 
 /*void sortuvannya() {
 	char literal, literal1;
