@@ -10,9 +10,10 @@
 #include <string.h>
 #include <cstdio>
 #include <conio.h>
-
+#define _CRT_SECURE_NO_WARNINGS
 void filecreate(void);
 void fileout(char*);
+//void writefiles(char*);
 void fileinmass(char*);
 void sortuvannya(void);
 char MASS[100][300]; //// 100 lines
@@ -22,15 +23,19 @@ int main()
 	filecreate();
 	fileout("Poch.txt");
 	fileinmass("Poch.txt");
-	
-	sortuvannya();
+
+	//sortuvannya();
 	std::cout << "\n  MASS:\n";
-	
+
 	for (int i = 0;i < lines;i++) {
-		std::cout << MASS[i];
+		std::cout << i << ": " << MASS[i];
 	}
-	
-	std::cout << "\n" <<lines <<"\n";
+	sortuvannya();
+	std::cout << "\n";
+	for (int i = 0;i < lines;i++) {
+		std::cout << i << ": " << MASS[i];
+	}
+	std::cout << "\n" << lines << "\n";
 	system("pause");
 }
 
@@ -44,19 +49,21 @@ void filecreate() {
 	do
 	{
 		sumbol = _getch();
-		std::cout << sumbol;
+
 		if (sumbol != 3) {
-			if (sumbol == '\r') {
+			if (sumbol == '\r')
 				sumbol = '\n';
-				std::cout << "\n";
-			}
+			std::cout << sumbol;
+
 			fputc(sumbol, fp);
 		}
 
 	} while (sumbol != 3);
-	std::cout << "\n";
+
+
 	fclose(fp);
-	fseek(fp, 0L, SEEK_SET);
+	std::cout << '\n';
+
 }
 void fileout(char* filest) {
 	std::cout << "text file: \n";
@@ -68,24 +75,42 @@ void fileout(char* filest) {
 	if (fp == NULL) std::cout << "file not found";
 	else
 	{
-		
-		while (!feof(fp))	
+
+		while (!feof(fp))
 		{
-			if (fgets(strfile,100,fp)) {
-				puts(strfile);
-				
+			if (fgets(strfile, 100, fp)) {
+				std::cout << strfile;
+
 			}
-			
+
 		}
-		fclose(fp);
+
 	}
+	fclose(fp);
+}
+/*void writefiles(char* file) {
+FILE *fpfile = fopen(file, "rt");
+FILE *parnie = fopen("parnie", "wt");
+FILE *neparnie = fopen("neparnie", "wt");
+int i = 0;
+if (fpfile == NULL) std::cout << "file not found";
+else
+{
+while (!feof(fpfile))
+{
+if (i == 0) {
+fgets(parnie, 300, fpfile);
+
+}
 }
 
+
+
+}*/
 void fileinmass(char* filest) {
-	FILE* fp;
-	fp = fopen(filest, "rt");
-	
-	
+
+	FILE *fp = fopen(filest, "rt");
+
 	if (fp == NULL) std::cout << "file not found";
 
 	else
@@ -93,21 +118,27 @@ void fileinmass(char* filest) {
 
 		while (!feof(fp))
 		{
-			if (fgets(MASS[lines++], 300, fp)) {				
-			}
+			fgets(MASS[lines++], 301, fp);
+
+			if (MASS[lines - 1][0] == NULL) lines--;
+
 
 		}
-		fclose(fp);
+		//for (int i = 0;i < lines;i++) {
+		//		strncpy(MASS[i],MASS1[i], strlen(MASS[i]) - 2);
+		//		}
+
 	}
+	fclose(fp);
 }
 
 void sortuvannya() {
 	char literal, literal1;
-	int q = 1, r;
-	char string[60];
-	char *delimiter = "., ";
-	char *p, *w;
-	//for (int k = 0;k < lines;k++) {
+	int q = 0, r;
+	char string[300], MASS1[20][30];
+	char *delimiter = " ";
+	//char *p, *w, *s = "           ";
+	for (int k = 0;k < lines;k++) {
 		for (int i = 0;i < lines;i = i + 2) {
 			if ((i + 2) > lines)break;
 			literal = MASS[i][0]; literal1 = MASS[i + 2][0];
@@ -117,36 +148,50 @@ void sortuvannya() {
 			}
 			q = 0;
 			if (int(literal) > int(literal1)) {
-				strcpy(string, MASS[i]);				
+				strcpy(string, MASS[i]);
 				strcpy(MASS[i], MASS[i + 2]);
-				strcpy(MASS[i + 2], string);			
+				strcpy(MASS[i + 2], string);
 			}
 
 		}
-	//}
-}
-	/*for (int i = 1;i < lines;i = i + 2) {
-		p = strtok(MASS[i], delimiter);
-		w = strtok(NULL, delimiter);
-		for (int k = 0;k < strlen(MASS[i]);k++) {			
-			if (strlen(p) > strlen(w)) { r = strlen(p); }
-			else r = strlen(w);
-			do
-			{
-				for (int y = 0;y < r;y++) {
-					if (int(p[y])>int(w[y]))
-						strcpy(string, w);
-					strcpy(w, p);
-					strcpy(p, string);
-				}
-			p = strtok(NULL, delimiter);
-			if (p == NULL)break;
-			w = strtok(NULL, delimiter);
-			
-			} while (w != NULL);
-		}
 	}
-	}*/
+}
+
+/*for (int i = 1;i < lines;i = i + 2) {
+int l = 0;
+p = strtok(MASS[i], delimiter);
+
+while (p != NULL) {
+strcpy(MASS1[l], p);
+p = strtok(NULL, delimiter);
+l++;
+}
+for (int b = 0;b < l;b++){
+for (int a = 0;a < l;a++) {
+if (strlen(MASS1[a]) > strlen(MASS1[a + 1])) { r = strlen(MASS1[a]); }
+else r = strlen(MASS1[a + 1]);
+for (int y = 0;y < r;y++) {
+if (int(MASS1[a][y]) > int(MASS1[a + 1][y])) {
+strcpy(string, MASS1[a]);
+strcpy(MASS1[a], MASS1[a + 1]);
+strcpy(MASS1[a + 1], string);
+break;
+}
+
+}
 
 
+
+}
+}
+std::cout << "MASS111: ";
+for (int n = 0;n < l;n++) {
+std::cout << n << ": " << MASS1[n] << "\n";
+}
+/*strcpy(MASS[i]," ");
+for (int n = 0;n < l;n++) {
+strcat(MASS[i], MASS1[n]);
+}*/
+//}
+//}
 
