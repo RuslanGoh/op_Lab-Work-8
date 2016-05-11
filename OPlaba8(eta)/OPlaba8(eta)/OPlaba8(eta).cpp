@@ -15,19 +15,21 @@ void filecreate(void);
 void fileout(char*);
 void writefiles(char*);
 void fileinmass(char* ,char* );
-void sortuvannya(void);
+void sortuvannya(int);
 void massintext(char* , char* );
 char MASS[100][300],nMASS[100][300],MASS1[200][300]; 
-int lines = 0,nlines=0,l=1;
+int lines = 0,nlines=0,l=1,N;
 
 int main()
 {
+	setlocale(LC_ALL, "Ukrainian");
 	filecreate();
 	fileout("Poch.txt");
 	writefiles("Poch.txt");	
 	fileout("parnie.txt");
 	fileout("neparnie.txt");
 	fileinmass("parnie.txt","neparnie.txt");
+	std::cout << "\nВведіть кількість кількість рядків для сортування:";std::cin >> N;std::cout<<"\n";
 	std::cout << "\n  MASS:\n";
 
 	for (int i = 0;i < lines;i++) {
@@ -39,7 +41,7 @@ int main()
 	}
 	std::cout << "\n lines:" << lines << "\n";
 	std::cout << "\n nlines:" << nlines << "\n";
-	sortuvannya();
+	sortuvannya(N);
 	std::cout << "\n  MASS:\n";
 	for (int i = 0;i < lines;i++) {
 		std::cout << i << ": " << MASS[i] << "\n";
@@ -169,7 +171,7 @@ void fileinmass(char* parnie, char* neparnie) {
 	fclose(nfp);
 }
 
-void sortuvannya() {
+void sortuvannya(int N) {
 	char literal, literal1;
 	int q = 1, r;
 	char string[300];
@@ -193,7 +195,7 @@ void sortuvannya() {
 	}
 
 
-for (int i = 0;i < nlines;i ++) {
+for (int i = 0;i <N;i ++) {
 	int m = 0;
 p = strtok(nMASS[i], delimiter);
 
@@ -208,7 +210,7 @@ for (int i = 0;i < 5;i++) {
 }
 for (int b = 0;b < 40;b++){
 for (int a = 0;a < m;a++){
-	//if (a + 1 == m) break;
+	if (a + 1 == m) break;
 if (strlen(MASS1[a]) < strlen(MASS1[a + 1])) { r = strlen(MASS1[a]); }
 else { r = strlen(MASS1[a + 1]); }
 for (int y = 0;y < 10;y++) {
