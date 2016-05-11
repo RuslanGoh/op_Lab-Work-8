@@ -16,8 +16,10 @@ void fileout(char*);
 void writefiles(char*);
 void fileinmass(char* ,char* );
 void sortuvannya(void);
-char MASS[100][300],nMASS[100][300]; //// 100 lines
-int lines = 0,nlines=0;
+void massintext(char* , char* );
+char MASS[100][300],nMASS[100][300],MASS1[200][300]; 
+int lines = 0,nlines=0,l=1;
+
 int main()
 {
 	filecreate();
@@ -37,6 +39,22 @@ int main()
 	}
 	std::cout << "\n lines:" << lines << "\n";
 	std::cout << "\n nlines:" << nlines << "\n";
+	sortuvannya();
+	std::cout << "\n  MASS:\n";
+	for (int i = 0;i < lines;i++) {
+		std::cout << i << ": " << MASS[i] << "\n";
+	}
+	std::cout << "\n  nMASS:\n";
+	for (int i = 0;i < nlines;i++) {
+		std::cout << i << ": " << nMASS[i] << "\n";
+	}
+	std::cout << "\n  MASS1:\n";
+	for (int i = 0;i < 5;i++) {
+		std::cout << i << ": " << MASS1[i] << "\n";
+	}
+	massintext("parnie.txt", "neparnie.txt");
+	fileout("parnie.txt");
+	fileout("neparnie.txt");
 	system("pause");
 }
 
@@ -52,8 +70,10 @@ void filecreate() {
 		sumbol = _getch();
 
 		if (sumbol != 3) {
-			if (sumbol == '\r')
+			if (sumbol == '\r') {
 				sumbol = '\n';
+				l++;
+			}
 			std::cout << sumbol;
 
 			fputc(sumbol, fp);
@@ -132,86 +152,111 @@ void fileinmass(char* parnie, char* neparnie) {
 		while (!feof(fp))
 		{
 			fgets(helpstring, 301, fp);
-			strncpy(MASS[lines++], helpstring, strlen(helpstring) - 1);
-			if (MASS[lines - 1][0] == NULL) lines--;
-
-
+			strncpy(MASS[lines], helpstring, strlen(helpstring) - 1);
+			lines++;		
 		}
 		
 		while (!feof(nfp))
 		{
 			fgets(helpstring, 301, nfp);
-			strncpy(nMASS[nlines++], helpstring, strlen(helpstring) - 1);
-			if (nMASS[nlines - 1][0] == NULL) nlines--;
-
-
+			strncpy(nMASS[nlines], helpstring, strlen(helpstring) - 1);
+			nlines++;			
 		}
+		nlines = l / 2; lines = l - nlines;
 
 	}
 	fclose(fp);
 	fclose(nfp);
 }
 
-/*void sortuvannya() {
+void sortuvannya() {
 	char literal, literal1;
-	int q = 0, r;
-	char string[300], MASS1[20][30];
-	char *delimiter = " ";
-	//char *p, *w, *s = "           ";
+	int q = 1, r;
+	char string[300];
+	char *delimiter = " ",*p;
 	for (int k = 0;k < lines;k++) {
-		for (int i = 0;i < lines;i = i + 2) {
-			if ((i + 2) > lines)break;
-			literal = MASS[i][0]; literal1 = MASS[i + 2][0];
+		for (int i = 0;i < lines;i++) {
+			if ((i + 1) == lines)break;
+			literal = MASS[i][0]; literal1 = MASS[i + 1][0];
 			while (int(literal) == int(literal1)) {
-				literal = MASS[i][0 + q]; literal1 = MASS[i + 2][0 + q];
+				literal = MASS[i][0 + q]; literal1 = MASS[i + 1][0 + q];
 				q++;
 			}
 			q = 0;
 			if (int(literal) > int(literal1)) {
 				strcpy(string, MASS[i]);
-				strcpy(MASS[i], MASS[i + 2]);
-				strcpy(MASS[i + 2], string);
+				strcpy(MASS[i], MASS[i + 1]);
+				strcpy(MASS[i + 1], string);
 			}
 
 		}
 	}
-}
 
-/*for (int i = 1;i < lines;i = i + 2) {
-int l = 0;
-p = strtok(MASS[i], delimiter);
+
+for (int i = 0;i < nlines;i ++) {
+	int m = 0;
+p = strtok(nMASS[i], delimiter);
 
 while (p != NULL) {
-strcpy(MASS1[l], p);
+strcpy(MASS1[m], p);
 p = strtok(NULL, delimiter);
-l++;
+m++;
 }
-for (int b = 0;b < l;b++){
-for (int a = 0;a < l;a++) {
-if (strlen(MASS1[a]) > strlen(MASS1[a + 1])) { r = strlen(MASS1[a]); }
-else r = strlen(MASS1[a + 1]);
-for (int y = 0;y < r;y++) {
-if (int(MASS1[a][y]) > int(MASS1[a + 1][y])) {
+std::cout << "\n  MASS1:\n";
+for (int i = 0;i < 5;i++) {
+	std::cout << i << ": " << MASS1[i] << "\n";
+}
+for (int b = 0;b < 40;b++){
+for (int a = 0;a < m;a++){
+	//if (a + 1 == m) break;
+if (strlen(MASS1[a]) < strlen(MASS1[a + 1])) { r = strlen(MASS1[a]); }
+else { r = strlen(MASS1[a + 1]); }
+for (int y = 0;y < 10;y++) {
+if ( int (MASS1[a][y]) > int (MASS1[a + 1][y])) {
 strcpy(string, MASS1[a]);
 strcpy(MASS1[a], MASS1[a + 1]);
 strcpy(MASS1[a + 1], string);
 break;
 }
-
-}
-
-
-
 }
 }
-std::cout << "MASS111: ";
-for (int n = 0;n < l;n++) {
-std::cout << n << ": " << MASS1[n] << "\n";
 }
-/*strcpy(MASS[i]," ");
-for (int n = 0;n < l;n++) {
-strcat(MASS[i], MASS1[n]);
-}*/
-//}
-//}*/
+std::cout << "\n  MASS1:\n";
+for (int i = 0;i < 5;i++) {
+	std::cout << i << ": " << MASS1[i] << "\n";
+}
+strcpy(nMASS[i], " ");
+for (int a = 0;a < m;a++) {
+	strcat(nMASS[i], MASS1[a]);
+	strcat(nMASS[i], " ");
+}
+}
+}
 
+void massintext(char* parnie, char* neparnie) {
+	FILE *fpp = fopen(parnie, "wt");
+	FILE *nfpp = fopen(neparnie, "wt");
+	/*for (int i = 0;i < nlines;i++) {
+		strcat(nMASS[i], "\n");
+	}
+	for (int i = 0;i < lines;i++) {
+		strcat(MASS[i], "\n");
+	}*/
+	char sumbol;
+	for (int i = 0;i < nlines;i++) {
+		for (int j = 0;j < strlen(nMASS[i]);j++) {
+			sumbol = nMASS[i][j];
+			fputc(sumbol, nfpp);
+		}
+		fputc('\n', nfpp);
+	}
+	for (int i = 0;i < lines;i++) {
+		for (int j = 0;j < strlen(MASS[i]);j++) {
+			sumbol = MASS[i][j];
+			fputc(sumbol, fpp);
+		}
+		fputc('\n', fpp);
+	}
+	fclose(fpp);
+	fclose(nfpp);
+}
